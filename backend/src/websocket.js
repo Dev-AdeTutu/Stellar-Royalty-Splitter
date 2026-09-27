@@ -1,5 +1,6 @@
 import { WebSocketServer } from "ws";
 import logger from "./logger.js";
+import { handleSubscriptionMessage, unsubscribeAll } from "./graphql.js";
 
 const clients = new Map();
 
@@ -25,6 +26,10 @@ export function initializeWebSocket(server) {
     ws.on("message", (data) => {
       try {
         const msg = JSON.parse(data.toString());
+
+        // Delegate GraphQL subscription commands (#969)
+        if (handleSubscriptionMessage(ws, msg)) return;
+
         if (msg.type === "subscribe" && msg.walletAddress) {
           ws.walletAddress = msg.walletAddress;
           if (!clients.has(msg.walletAddress)) {
@@ -59,6 +64,15 @@ export function initializeWebSocket(server) {
           ws.send(JSON.stringify({ type: "subscribed_finality", transactionId: msg.transactionId }));
           logger.info("Client subscribed to finality updates", { transactionId: msg.transactionId });
         }
+        if (msg.type === "subscribe_collaboration" && msg.contractId) {
+          const key = `collab:${msg.contractId}`;
+          if (!clients.has(key)) clients.set(key, new Set());
+          clients.get(key).add(ws);
+          if (!ws.collaborationKeys) ws.collaborationKeys = new Set();
+          ws.collaborationKeys.add(key);
+          ws.send(JSON.stringify({ type: "subscribed_collaboration", contractId: msg.contractId }));
+          logger.info("Client subscribed to collaboration updates", { contractId: msg.contractId });
+        }
         if (msg.type === "ping") {
           ws.send(JSON.stringify({ type: "pong" }));
         }
@@ -68,6 +82,9 @@ export function initializeWebSocket(server) {
     });
 
     ws.on("close", () => {
+      // Clean up all GraphQL subscriptions for this socket (#969)
+      unsubscribeAll(ws);
+
       // Clear timeout
       if (ws._timeout) {
         clearTimeout(ws._timeout);
@@ -98,6 +115,14 @@ export function initializeWebSocket(server) {
             if (clients.get(key).size === 0) {
               clients.delete(key);
             }
+          }
+        });
+      }
+      if (ws.collaborationKeys) {
+        ws.collaborationKeys.forEach((key) => {
+          if (clients.has(key)) {
+            clients.get(key).delete(ws);
+            if (clients.get(key).size === 0) clients.delete(key);
           }
         });
       }
@@ -230,5 +255,18 @@ export function broadcastTransactionStatus(transactionId, update) {
       }
     });
   }
+  return sent;
+}
+
+export function broadcastCollaborationUpdate(contractId, update) {
+  const key = `collab:${contractId}`;
+  const message = JSON.stringify({ type: "collaboration_update", data: update });
+  let sent = 0;
+  clients.get(key)?.forEach((ws) => {
+    if (ws.readyState === 1) {
+      ws.send(message);
+      sent++;
+    }
+  });
   return sent;
 }
