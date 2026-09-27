@@ -52,6 +52,7 @@
     "@opentelemetry/resources": "1.30.0",
     "@opentelemetry/sdk-node": "0.57.0",
     "@opentelemetry/semantic-conventions": "1.30.0",
+    "@sendgrid/mail": "8.1.4",
     "@stellar/stellar-sdk": "^12.3.0",
     "better-sqlite3": "^9.2.0",
     "compression": "^1.8.1",

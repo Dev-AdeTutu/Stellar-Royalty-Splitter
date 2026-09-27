@@ -84,6 +84,8 @@ import { openseaRouter } from "./routes/marketplaces/opensea.js";
 import { raribleRouter } from "./routes/marketplaces/rarible.js";
 import { smsPreferencesRouter } from "./routes/notifications/sms.js";
 import { taxReportsRouter } from "./routes/tax/reports.js";
+import { emailTemplatesRouter } from "./routes/communications/email-templates.js";
+import { sendgridWebhookRouter } from "./routes/webhooks/sendgrid.js";
 
 // Initialize database on startup
 initializeDatabase();
@@ -432,6 +434,12 @@ app.use("/api/v1/snapshots", snapshotRouter);
 
 // Contributor communication history (#612)
 app.use("/api/v1/communications", communicationsRouter);
+
+// Email template management (SendGrid migration)
+app.use("/api/v1/communications/email-templates", emailTemplatesRouter);
+
+// SendGrid event webhook (delivery, bounce, complaint tracking)
+app.use("/api/v1/webhooks/sendgrid", sendgridWebhookRouter);
 
 // API version discovery (#676)
 app.use("/api/v1/version", versionRouter);
