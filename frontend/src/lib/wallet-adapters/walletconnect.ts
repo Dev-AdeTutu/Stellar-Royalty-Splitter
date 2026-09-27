@@ -15,7 +15,6 @@
  */
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { TransactionBuilder, Networks } from "@stellar/stellar-sdk";
 
 export interface WalletConnectConfig {
   projectId: string;
@@ -80,7 +79,7 @@ export class WalletConnectAdapter {
         icons: [`${window.location.origin}/favicon.svg`],
       },
       showQrModal: false, // We display QR ourselves
-    });
+    } as any);
 
     // Set up event listeners
     this.provider.on("display_uri", (uri: string) => {
@@ -313,4 +312,3 @@ export function createWalletConnectAdapter(
   });
 }
 
-export type { WalletConnectConfig };

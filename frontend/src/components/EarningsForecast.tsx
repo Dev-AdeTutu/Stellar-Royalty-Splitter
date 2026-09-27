@@ -14,7 +14,6 @@ export const EarningsForecast: React.FC<EarningsForecastProps> = ({
   const [avgPayout, setAvgPayout] = useState<string>("100");
   const [secondaryVolume, setSecondaryVolume] = useState<string>("5000");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
   const [forecast, setForecast] = useState<{
     monthlyBaseRate: number;
@@ -35,7 +34,6 @@ export const EarningsForecast: React.FC<EarningsForecastProps> = ({
 
   const fetchForecast = async () => {
     setLoading(true);
-    setError(null);
     try {
       const params = new URLSearchParams();
       if (contractId) params.append("contractId", contractId);

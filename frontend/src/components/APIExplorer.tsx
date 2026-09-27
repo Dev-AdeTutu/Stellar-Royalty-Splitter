@@ -141,16 +141,25 @@ export const APIExplorer: React.FC = () => {
         data: resData,
         curl: `curl -X ${method} "${window.location.origin}${finalUrl}" ${Object.entries(reqHeaders)
           .map(([k, v]) => `-H "${k}: ${v}"`)
-          .join(" ")} ${body ? `-d '${body}'` : ""}`,
+          .join(" ")} ${body ? `-d '${body}'` : ""}`.trim(),
         js: `fetch("${finalUrl}", {\n  method: "${method}",\n  headers: ${JSON.stringify(reqHeaders, null, 2)}\n});`,
         python: `import requests\nres = requests.${method.toLowerCase()}("${finalUrl}", headers=${JSON.stringify(reqHeaders)})\nprint(res.json())`,
       });
     } catch (err: any) {
+      const finalUrl = `${path}${new URLSearchParams(queryParams).toString() ? `?${new URLSearchParams(queryParams).toString()}` : ""}`;
+      const reqHeaders: Record<string, string> = { ...headers };
+      if (apiKey) reqHeaders["X-API-Key"] = apiKey;
+
       setResponse({
         status: 500,
         statusText: "Network Error",
         durationMs: Date.now() - start,
         data: { error: err.message || "Failed to reach server" },
+        curl: `curl -X ${method} "${window.location.origin}${finalUrl}" ${Object.entries(reqHeaders)
+          .map(([k, v]) => `-H "${k}: ${v}"`)
+          .join(" ")} ${body ? `-d '${body}'` : ""}`.trim(),
+        js: `fetch("${finalUrl}", {\n  method: "${method}",\n  headers: ${JSON.stringify(reqHeaders, null, 2)}\n});`,
+        python: `import requests\nres = requests.${method.toLowerCase()}("${finalUrl}", headers=${JSON.stringify(reqHeaders)})\nprint(res.json())`,
       });
     } finally {
       setIsLoading(false);

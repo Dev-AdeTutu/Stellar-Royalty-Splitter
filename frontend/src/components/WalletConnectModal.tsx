@@ -100,16 +100,6 @@ export const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
     };
   }, [isOpen, network, onConnect, onClose]);
 
-  const handleRetry = () => {
-    setError(null);
-    setQrUri(null);
-    adapterRef.current?.disconnect().catch(() => {});
-    adapterRef.current = null;
-
-    // Re-trigger connection by temporarily closing and reopening
-    // In a real app, this would be handled differently
-  };
-
   if (!isOpen) return null;
 
   return (
