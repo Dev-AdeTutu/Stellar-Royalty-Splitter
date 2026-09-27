@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import QRCode from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 import "./QRModal.css";
 
 interface QRModalProps {
@@ -34,7 +34,6 @@ export const QRModal: React.FC<QRModalProps> = ({
   isLoading = false,
   error = null,
   onClose,
-  onConnect,
   walletName = "WalletConnect",
 }) => {
   const [copied, setCopied] = useState(false);
@@ -88,12 +87,11 @@ export const QRModal: React.FC<QRModalProps> = ({
                 Scan this QR code with your mobile wallet or hardware wallet app
               </p>
               <div className="qr-code-wrapper">
-                <QRCode
+                <QRCodeCanvas
                   value={uri}
                   size={256}
                   level="H"
                   includeMargin={true}
-                  renderAs="canvas"
                 />
               </div>
               <p className="qr-modal-subtext">

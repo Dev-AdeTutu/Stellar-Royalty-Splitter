@@ -14,11 +14,6 @@ import {
   downloadCSV,
   type CollaboratorExportItem,
 } from "../utils/export";
-// Reuses BulkOperationsPanel's visual styling (`.bulk-operations-panel` /
-// `.bulk-action-btn` / etc.) for the collaborator bulk-action bar below —
-// see the comment above that bar for why the component itself isn't reused.
-import { BulkActionToolbar } from "./BulkActionToolbar";
-import { useBulkOperations } from "../hooks/useBulkOperations";
 import "./BulkOperationsPanel.css";
 import "./CollaboratorDirectory.css";
 
@@ -85,15 +80,6 @@ export default function CollaboratorDirectory({
     sortBy,
     sortDirection,
   });
-
-  const {
-    progress: bulkProgress,
-    statusMessage: hookStatusMessage,
-    bulkSuspend: hookBulkSuspend,
-    bulkUnsuspend: hookBulkUnsuspend,
-    bulkChangeTier: hookBulkChangeTier,
-    bulkSendMessage: hookBulkSendMessage,
-  } = useBulkOperations(contractId, walletAddress);
 
   const selectedItems = useMemo(
     () => all.filter((c) => selected.has(c.address)),
