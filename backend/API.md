@@ -20,7 +20,6 @@ and internal errors — uses the same JSON shape and is built by
   "error": "Collaborators array must be non-empty",
   "retryable": false,
   "retryAfter": null,
-  "details_url": "docs/errors#validation_failed",
   "details": [{ "field": "collaborators", "message": "Collaborators array must be non-empty" }]
 }
 ```
@@ -33,7 +32,6 @@ and internal errors — uses the same JSON shape and is built by
 | `error` | Same value as `message` — kept for backward compatibility with older clients that read `.error` |
 | `retryable` | Boolean indicating whether the request can be retried |
 | `retryAfter` | Suggested retry delay in seconds (null if not retryable) |
-| `details_url` | Link to error documentation in the error catalog |
 | `details` | Present only on validation errors; an array of `{ field, message }` issues |
 | `complexity_score` | Present on `request_too_complex` errors; computed complexity score |
 | `limit` | Present on `request_too_complex` errors; maximum allowed complexity score |
@@ -106,7 +104,6 @@ When a request exceeds the limit, it is rejected immediately with HTTP 400:
   "error": "Request exceeds maximum complexity limit of 1000 (calculated score: 1052)",
   "retryable": false,
   "retryAfter": null,
-  "details_url": "docs/errors#request_too_complex",
   "complexity_score": 1052,
   "limit": 1000
 }
