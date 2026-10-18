@@ -184,21 +184,6 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({
     return !isSecondaryTx(tx.type);
   }
 
-  function matchesSearch(tx: TransactionRecord, query: string) {
-    if (!query) return true;
-    const q = query.trim().toLowerCase();
-    return (
-      (tx.txHash ?? "").toLowerCase().includes(q) ||
-      String(tx.id).toLowerCase().includes(q) ||
-      tx.initiatorAddress.toLowerCase().includes(q)
-    );
-  }
-
-  function matchesToken(tx: TransactionRecord, token: string) {
-    if (!token) return true;
-    return (tx.tokenId ?? "").toLowerCase().includes(token.trim().toLowerCase());
-  }
-
   function sortTransactions(txs: TransactionRecord[]): TransactionRecord[] {
     const dir = sortDirection === "asc" ? 1 : -1;
     return [...txs].sort((a, b) => {
