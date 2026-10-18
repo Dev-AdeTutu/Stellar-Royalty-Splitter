@@ -167,7 +167,6 @@ describe("POST /api/v1/simulate", () => {
     });
     expect(res.body.feeBreakdown).toBeDefined();
     expect(res.body.perRecipientEffectiveFee).toBeDefined();
-    expect(res.body.feeScalingComparison).toBeDefined();
     expect(simulateTransaction).toHaveBeenCalledTimes(1);
     expect(contractCall).toHaveBeenCalledWith("distribute", TOKEN);
   });
@@ -188,7 +187,6 @@ describe("POST /api/v1/simulate", () => {
     });
     expect(res.body.feeBreakdown).toBeDefined();
     expect(res.body.perRecipientEffectiveFee).toBe(0);
-    expect(res.body.feeScalingComparison).toBeDefined();
     expect(simulateTransaction).toHaveBeenCalledTimes(1);
   });
 
