@@ -171,6 +171,7 @@ const express = (await import("express")).default;
 const { initializeRouter } = await import("../src/routes/initialize.js");
 const { distributeRouter } = await import("../src/routes/distribute.js");
 const { secondaryRoyaltyRouter } = await import("../src/routes/secondary-royalty.js");
+const { resetMetrics } = await import("../src/metrics.js");
 
 const app = express();
 app.use(express.json());
@@ -189,7 +190,10 @@ const COLLAB2 = "GBOW474QUGZMHVHF6YDRQKJ2JNOG27UPUCY4FU7E6UDBOKBZJJNWYPSI";
 const OTHER = "GDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD";
 
 describe("Audit entries created as a side effect of real actions", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    resetMetrics();
+  });
 
   test("POST /api/v1/initialize records contract_initialized with actor and reference data", async () => {
     jest.setTimeout(120000); // Increase from default 5000ms

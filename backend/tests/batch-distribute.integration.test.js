@@ -180,10 +180,12 @@ await jest.unstable_mockModule("../src/middleware/tieredRateLimit.js", () => ({
 }));
 
 const { default: app } = await import("./app.js");
+const { resetMetrics } = await import("../src/metrics.js");
 
 describe("POST /api/v1/batch-distribute — integration", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    resetMetrics();
     jest.setTimeout(120000); // Increase timeout for all batch-distribute tests
     transactionCounter = 0;
 

@@ -35,6 +35,7 @@ await jest.unstable_mockModule("../src/middleware/tieredRateLimit.js", () => ({
 
 // Import clearCache to reset between tests
 const { clearCache } = await import("../src/idempotency.js");
+const { resetMetrics } = await import("../src/metrics.js");
 const { default: app } = await import("./app.js");
 
 const CONTRACT = "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -46,6 +47,7 @@ const validBody = { contractId: CONTRACT, walletAddress: WALLET, tokenId: TOKEN 
 describe("POST /api/v1/distribute with idempotency", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    resetMetrics();
     clearCache();
   });
 

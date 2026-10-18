@@ -31,6 +31,7 @@ await jest.unstable_mockModule("../src/database/index.js", () => ({
 }));
 
 const { default: app } = await import("./app.js");
+const { resetMetrics } = await import("../src/metrics.js");
 
 // ── Test fixtures ─────────────────────────────────────────────────────────────
 
@@ -43,7 +44,10 @@ const validBody = { contractId: CONTRACT, walletAddress: WALLET, tokenId: TOKEN 
 // ── Integration tests ─────────────────────────────────────────────────────────
 
 describe("POST /api/v1/distribute — integration", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    resetMetrics();
+  });
 
   // ── Happy path ──────────────────────────────────────────────────────────────
 
