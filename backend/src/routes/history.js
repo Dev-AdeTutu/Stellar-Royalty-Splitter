@@ -457,7 +457,7 @@ router.post("/transaction/confirm/:txHash", async (req, res) => {
       deliverDistributeWebhooks(confirmed);
       // Real-time subscribers (earnings counters, notification panel) learn the
       // distribution actually completed only now that it is confirmed on-chain
-      // (#1125). routes/distribute.js emits `distribution_prepared` earlier.
+      // (#1177). routes/distribute.js emits `distribution_pending` earlier.
       broadcastToContract(confirmed.contractId, {
         type: "distribution_completed",
         contractId: confirmed.contractId,

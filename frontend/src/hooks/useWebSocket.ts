@@ -7,7 +7,7 @@ interface WebSocketMessage {
 }
 
 export interface DistributionEvent {
-  type: "distribution_prepared" | "distribution_completed" | "secondary_distribution_completed" | "secondary_sale_recorded";
+  type: "distribution_pending" | "distribution_prepared" | "distribution_completed" | "secondary_distribution_completed" | "secondary_sale_recorded";
   contractId: string;
   transactionId: string | number;
   timestamp: string;

@@ -75,12 +75,12 @@ distributeRouter.post(
       invalidateContractCaches(contractId, { reason: "distribute" });
 
       // Broadcast to connected WebSocket clients that an unsigned XDR is ready
-      // (#1125). Nothing has been submitted or paid out yet — the wallet still
-      // has to sign and submit it — so this is "prepared", not "completed".
+      // (#1177). Nothing has been submitted or paid out yet — the wallet still
+      // has to sign and submit it — so this is "distribution_pending", not "distribution_completed".
       // `distribution_completed` is emitted by POST /transaction/confirm/:txHash
       // (routes/history.js) once Horizon reports the transaction confirmed.
       broadcastToContract(contractId, {
-        type: "distribution_prepared",
+        type: "distribution_pending",
         contractId,
         transactionId,
         timestamp: new Date().toISOString(),
