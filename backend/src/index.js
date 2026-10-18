@@ -742,12 +742,14 @@ async function startServer() {
     server,
     closeDatabase,
     logger,
-    onShutdown: () => {
-      stopAllTracking();
+    closeWebSocket: () => {
       if (wss) {
         wss.close();
         logger.info("WebSocket server closed");
       }
+    },
+    onShutdown: () => {
+      stopAllTracking();
       if (digestInterval) {
         clearInterval(digestInterval);
         digestInterval = null;

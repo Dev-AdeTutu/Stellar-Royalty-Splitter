@@ -639,6 +639,7 @@ export const createScheduleSchema = z.object({
 }).superRefine(validateScheduleTiming);
 
 export const updateScheduleSchema = z.object({
+  walletAddress: stellarAddress.optional(),
   frequency: z.enum(["weekly", "biweekly", "monthly"]).optional(),
   dayOfWeek: z.number().int().min(0).max(6).optional().nullable(),
   dayOfMonth: z.number().int().min(1).max(28).optional().nullable(),
