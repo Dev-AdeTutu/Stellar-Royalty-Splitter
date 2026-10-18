@@ -101,7 +101,7 @@ describe("POST /api/v1/distribute", () => {
     expect(res.body).toMatchObject({ xdr: "distribute-xdr", transactionId: "tx-456" });
   });
 
-  test("broadcasts distribution_prepared, not distribution_completed, once the XDR is built (#1125)", async () => {
+  test("broadcasts distribution_pending, not distribution_completed, once the XDR is built (#1177)", async () => {
     retryBuildTx.mockResolvedValue("distribute-xdr");
     recordTransaction.mockReturnValue("tx-456");
 
@@ -111,7 +111,7 @@ describe("POST /api/v1/distribute", () => {
     expect(broadcastToContract).toHaveBeenCalledTimes(1);
     expect(broadcastToContract).toHaveBeenCalledWith(
       CONTRACT,
-      expect.objectContaining({ type: "distribution_prepared", transactionId: "tx-456" }),
+      expect.objectContaining({ type: "distribution_pending", transactionId: "tx-456" }),
     );
     expect(broadcastToContract).not.toHaveBeenCalledWith(
       expect.anything(),
