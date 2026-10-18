@@ -120,6 +120,7 @@ const {
 } = await import("../src/routes/simulate.js");
 
 const { default: app } = await import("./app.js");
+const { resetMetrics } = await import("../src/metrics.js");
 
 const validBody = buildDistributePayload({
   contractId: CONTRACT,
@@ -130,6 +131,7 @@ const validBody = buildDistributePayload({
 describe("POST /api/v1/simulate", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    resetMetrics();
   });
 
   test("returns simulation fee and recipient amounts from dist events", async () => {

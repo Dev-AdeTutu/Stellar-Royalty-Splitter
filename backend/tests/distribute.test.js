@@ -24,6 +24,11 @@ const stellarSdkMock = {
   BASE_FEE: "100",
   Account: jest.fn(),
   scValToNative: jest.fn((value) => value),
+  StrKey: {
+    isValidEd25519PublicKey: jest.fn(
+      (key) => typeof key === "string" && key.startsWith("G") && key.length === 56
+    ),
+  },
 };
 
 await jest.unstable_mockModule("@stellar/stellar-sdk", () => ({

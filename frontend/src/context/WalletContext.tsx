@@ -42,7 +42,7 @@ interface WalletContextType {
   setSelectedWallet: (type: string | null) => void;
 }
 
-const WalletContext = createContext<WalletContextType | undefined>(undefined);
+export const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [wallet, setWallet] = useState<WalletState | null>(null);
